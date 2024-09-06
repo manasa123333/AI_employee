@@ -200,7 +200,6 @@ def histplot(df):
     plt.show()
 
 def linear_regression(X,y):
-  X,y = check_imbalance_and_apply_smote(X,y)
   from sklearn.model_selection import train_test_split
   from sklearn.metrics import mean_squared_error
   X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
@@ -213,6 +212,7 @@ def linear_regression(X,y):
   return mse
 
 def Random_Forest(X,y):
+  X,y = check_imbalance_and_apply_smote(X,y)
   from sklearn.model_selection import train_test_split
   from sklearn.metrics import classification_report
   X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
@@ -451,20 +451,9 @@ class TestTrainModel(unittest.TestCase):
 
         target_regression = 'Total'  # Predict total number of medals
 
-        # For classification, example: classify into 'High', 'Medium', 'Low' based on total medals
-        def classify_medals(total):
-           if total >= 100:
-            return 'High'
-           elif total >= 50:
-            return 'Medium'
-           else:
-            return 'Low'
-
-        cleaned_dataset['Medal Category'] = cleaned_dataset['Total'].apply(classify_medals)
-        target_classification = 'Medal Category'
 
         Rx,Ry = data_cleaning_pipeline('/content/olympics2024.csv',target_regression)
-        Cx,Cy = data_cleaning_pipeline('/content/olympics2024.csv',target_classification)
+        Cx,Cy = data_cleaning_pipeline('/content/Iris.csv','Species')
 
         # Ensure the cleaned dataset is valid
         self.assertIsNotNone(cleaned_dataset, "The cleaned dataset should not be None.")
